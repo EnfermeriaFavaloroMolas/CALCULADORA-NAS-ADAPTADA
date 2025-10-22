@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complejo Sanitario Favaloro - Calculadora NAS</title>
+    <style>
+        :root {
+            --primary: #0056a6;
+            --primary-light: #e8f4fd;
+            --secondary: #d32f2f;
+            --text: #333;
+            --text-light: #666;
+            --background: #f5f5f5;
+            --white: #ffffff;
+            --border: #e0e0e0;
+            --shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: var(--primary);
+            color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        h2 {
+            font-size: 1.4rem;
+            font-weight: normal;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-section {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .item-group {
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .item-group.disabled {
+            opacity: 0.5;
+            background-color: #f9f9f9;
+        }
+        
+        .item-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+        
+        .item-description {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .radio-option input {
+            margin-right: 5px;
+        }
+        
+        .results-section {
+            background-color: var(--primary-light);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d0e8ff;
+        }
+        
+        .result-value {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .classification {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #d0e8ff;
+            border-radius: 5px;
+        }
+        
+        .classification-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+            }
+            
+            .form-section, .results-section {
+                padding: 15px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Complejo Sanitario Favaloro</h1>
+        <h2>Calculadora de NAS (Nursing Activities Score)</h2>
+    </header>
+    
+    <div class="container">
+        <section class="form-section">
+            <div class="item-group" id="group0">
+                <div class="item-title">0. Monitorización básica</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item0" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item0" value="1.2"> Seleccionado (1.2 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group1">
+                <div class="item-title">1. Observación continua o activa durante 2 horas o más</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item1" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item1" value="3.9"> Seleccionado (3.9 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group2">
+                <div class="item-title">2. Observación continua o activa 4 horas o más</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item2" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item2" value="5.9"> Seleccionado (5.9 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group3">
+                <div class="item-title">3. Análisis de bioquímica, hematología o microbiología</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item3" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item3" value="1.7"> Seleccionado (1.7 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group4">
+                <div class="item-title">4. Medicación excepto fármacos vasoactivos</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item4" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item4" value="4.6"> Seleccionado (4.6 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group5">
+                <div class="item-title">5. Procedimientos de higiene básica</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item5" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item5" value="1.5"> Seleccionado (1.5 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group6">
+                <div class="item-title">6. Procedimientos higiene con duración > 2 horas</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item6" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item6" value="3.8"> Seleccionado (3.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group7">
+                <div class="item-title">7. Procedimientos de higiene con duración > 4 horas</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item7" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item7" value="6.4"> Seleccionado (6.4 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group8">
+                <div class="item-title">8. Cuidados de drenajes, excepto SNG</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item8" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item8" value="1.4"> Seleccionado (1.4 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group9">
+                <div class="item-title">9. Cambios posturales, sentar en sillón, decúbito prono hasta 3 veces/d</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item9" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item9" value="2.5"> Seleccionado (2.5 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group10">
+                <div class="item-title">10. Cambios posturales, sentar en sillón, decúbito prono más de 3 veces/d ó 2 enfermeros</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item10" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item10" value="5.2"> Seleccionado (5.2 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group11">
+                <div class="item-title">11. Cambios posturales, sentar en sillón, decúbito prono más de 3 enfermeras</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item11" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item11" value="8.1"> Seleccionado (8.1 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group12">
+                <div class="item-title">12. Apoyo y cuidado a familiares. Una hora de dedicación</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item12" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item12" value="2.7"> Seleccionado (2.7 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group13">
+                <div class="item-title">13. Apoyo y cuidado a familiares. Al menos tres horas de dedicación</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item13" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item13" value="5.5"> Seleccionado (5.5 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group14">
+                <div class="item-title">14. Tareas administrativas o de gestión- Básicas</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item14" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item14" value="1.8"> Seleccionado (1.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group15">
+                <div class="item-title">15. Tareas administrativas o de gestión hasta 2 horas</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item15" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item15" value="3.9"> Seleccionado (3.9 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group16">
+                <div class="item-title">16. Tareas administrativas o de gestión más de 4 horas</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item16" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item16" value="6.9"> Seleccionado (6.9 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group17">
+                <div class="item-title">17. Soporte ventilatorio</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item17" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item17" value="1.8"> Seleccionado (1.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group18">
+                <div class="item-title">18. Cuidados de la vía</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item18" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item18" value="1.4"> Seleccionado (1.4 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group19">
+                <div class="item-title">19. Tratamientos para mejorar la ventilación</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item19" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item19" value="1.4"> Seleccionado (1.4 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group20">
+                <div class="item-title">20. Medicación vasoactiva</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item20" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item20" value="2.8"> Seleccionado (2.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group21">
+                <div class="item-title">21. Reposición intravenosa de gran cantidad de líquidos</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item21" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item21" value="2.8"> Seleccionado (2.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group22">
+                <div class="item-title">22. Monitorización de aurícula izquierda</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item22" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item22" value="2.8"> Seleccionado (2.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group23">
+                <div class="item-title">23. RCP tras parada Cardiorespiratoria en las últimas 24 h</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item23" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item23" value="4.4"> Seleccionado (4.4 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group24">
+                <div class="item-title">24. Tecnicas de depuración extrarenal</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item24" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item24" value="2.8"> Seleccionado (2.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group25">
+                <div class="item-title">25. Cuantificación de diuresis</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item25" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item25" value="1.4"> Seleccionado (1.4 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group26">
+                <div class="item-title">26. Medida de la presión intracraneal</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item26" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item26" value="2.8"> Seleccionado (2.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group27">
+                <div class="item-title">27. Tratamiento de complicaciones metabólicas</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item27" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item27" value="1.8"> Seleccionado (1.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group28">
+                <div class="item-title">28. Nutrición parenteral</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item28" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item28" value="1.8"> Seleccionado (1.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group29">
+                <div class="item-title">29. Nutrición enteral</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item29" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item29" value="1.8"> Seleccionado (1.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group30">
+                <div class="item-title">30. Intervenciones específicas en UCI: CIRUGIA MENOR/ESTUDIOS</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item30" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item30" value="1.8"> Seleccionado (1.8 puntos)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="item-group" id="group31">
+                <div class="item-title">31. Intervenciones específicas fuera de la UCI: CIRGUGIA MAYOR/CARDIOVASCULAR</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="item31" value="0"> No seleccionado
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="item31" value="2.8"> Seleccionado (2.8 puntos)
+                    </label>
+                </div>
+            </div>
+        </section>
+        
+        <section class="results-section">
+            <h2>Resultados NAS</h2>
+            <div class="result-item">
+                <span>Puntaje Total NAS:</span>
+                <span class="result-value" id="totalScore">0.0</span>
+            </div>
+            
+            <div class="classification">
+                <div class="classification-title">Clasificación del Paciente:</div>
+                <div id="patientClassification">No clasificado</div>
+            </div>
+            
+            <div class="classification">
+                <div class="classification-title">Carga de Trabajo por Enfermero:</div>
+                <div id="nurseWorkload">No calculado</div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        Enfermería Favaloro®
+    </footer>
+
+    <script>
+        // Definir grupos de exclusión mutua
+        const exclusionGroups = {
+            '0': ['1', '2'],  // Si se selecciona 0, no se pueden seleccionar 1 y 2
+            '1': ['0', '2'],  // Si se selecciona 1, no se pueden seleccionar 0 y 2
+            '2': ['0', '1'],  // Si se selecciona 2, no se pueden seleccionar 0 y 1
+            '5': ['6', '7'],  // Si se selecciona 5, no se pueden seleccionar 6 y 7
+            '6': ['5', '7'],  // Si se selecciona 6, no se pueden seleccionar 5 y 7
+            '7': ['5', '6'],  // Si se selecciona 7, no se pueden seleccionar 5 y 6
+            '9': ['10', '11'], // Si se selecciona 9, no se pueden seleccionar 10 y 11
+            '10': ['9', '11'], // Si se selecciona 10, no se pueden seleccionar 9 y 11
+            '11': ['9', '10'], // Si se selecciona 11, no se pueden seleccionar 9 y 10
+            '12': ['13'],     // Si se selecciona 12, no se puede seleccionar 13
+            '13': ['12'],     // Si se selecciona 13, no se puede seleccionar 12
+            '14': ['15', '16'], // Si se selecciona 14, no se pueden seleccionar 15 y 16
+            '15': ['14', '16'], // Si se selecciona 15, no se pueden seleccionar 14 y 16
+            '16': ['14', '15']  // Si se selecciona 16, no se pueden seleccionar 14 y 15
+        };
+        
+        // Función para calcular el puntaje total
+        function calculateTotalScore() {
+            let total = 0;
+            
+            // Recorrer todos los grupos de items
+            for (let i = 0; i <= 31; i++) {
+                const selectedRadio = document.querySelector(`input[name="item${i}"]:checked`);
+                if (selectedRadio && selectedRadio.value !== "0") {
+                    total += parseFloat(selectedRadio.value);
+                }
+            }
+            
+            return total;
+        }
+        
+        // Función para clasificar al paciente según el puntaje NAS
+        function classifyPatient(score) {
+            if (score <= 25) {
+                return "Paciente de baja complejidad";
+            } else if (score <= 50) {
+                return "Paciente de mediana complejidad";
+            } else if (score <= 75) {
+                return "Paciente de alta complejidad";
+            } else {
+                return "Paciente de muy alta complejidad";
+            }
+        }
+        
+        // Función para calcular la carga de trabajo por enfermero
+        function calculateNurseWorkload(score) {
+            // Basado en el puntaje NAS, calcular cuántos pacientes puede atender un enfermero
+            if (score <= 25) {
+                return "1 enfermero puede atender hasta 4 pacientes";
+            } else if (score <= 50) {
+                return "1 enfermero puede atender hasta 2 pacientes";
+            } else if (score <= 75) {
+                return "1 enfermero puede atender 1 paciente";
+            } else {
+                return "Se recomienda 1 enfermero por paciente, posiblemente con apoyo adicional";
+            }
+        }
+        
+        // Función para actualizar los resultados
+        function updateResults() {
+            const totalScore = calculateTotalScore();
+            document.getElementById('totalScore').textContent = totalScore.toFixed(1);
+            document.getElementById('patientClassification').textContent = classifyPatient(totalScore);
+            document.getElementById('nurseWorkload').textContent = calculateNurseWorkload(totalScore);
+        }
+        
+        // Función para manejar la exclusión de items
+        function handleExclusions(selectedItem) {
+            // Si el item seleccionado tiene exclusiones, deshabilitar esos grupos
+            if (exclusionGroups[selectedItem]) {
+                exclusionGroups[selectedItem].forEach(item => {
+                    const group = document.getElementById(`group${item}`);
+                    group.classList.add('disabled');
+                    
+                    // Deshabilitar todos los radio buttons en ese grupo
+                    const radios = group.querySelectorAll('input[type="radio"]');
+                    radios.forEach(radio => {
+                        radio.disabled = true;
+                    });
+                    
+                    // Desmarcar cualquier selección previa
+                    const checkedRadio = group.querySelector('input[type="radio"]:checked');
+                    if (checkedRadio) {
+                        checkedRadio.checked = false;
+                    }
+                });
+            }
+            
+            // Si se deselecciona un item (se selecciona "No seleccionado")
+            // Verificar si hay que habilitar grupos previamente deshabilitados
+            if (selectedItem === "0") {
+                // Verificar si hay otros items que mantengan los grupos deshabilitados
+                for (let i = 0; i <= 31; i++) {
+                    const selectedRadio = document.querySelector(`input[name="item${i}"]:checked`);
+                    if (selectedRadio && selectedRadio.value !== "0") {
+                        // Si hay un item seleccionado que excluye otros grupos, mantenerlos deshabilitados
+                        return;
+                    }
+                }
+                
+                // Si no hay items seleccionados, habilitar todos los grupos
+                for (let i = 0; i <= 31; i++) {
+                    const group = document.getElementById(`group${i}`);
+                    group.classList.remove('disabled');
+                    
+                    const radios = group.querySelectorAll('input[type="radio"]');
+                    radios.forEach(radio => {
+                        radio.disabled = false;
+                    });
+                }
+            }
+        }
+        
+        // Agregar event listeners a todos los radio buttons
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const itemNumber = this.name.replace('item', '');
+                
+                if (this.value !== "0") {
+                    // Si se selecciona un item (no "No seleccionado")
+                    handleExclusions(itemNumber);
+                } else {
+                    // Si se selecciona "No seleccionado", verificar si hay que habilitar grupos
+                    handleExclusions("0");
+                }
+                
+                updateResults();
+            });
+        });
+        
+        // Inicializar resultados
+        updateResults();
+    </script>
+</body>
+</html>
